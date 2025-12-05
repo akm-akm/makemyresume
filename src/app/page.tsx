@@ -518,45 +518,30 @@ export default function Home() {
           }}
         />
 
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <h1 className="text-5xl font-bold tracking-tight mb-4 text-slate-900">
             MakeMyResume - Free Resume Builder
           </h1>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+          <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-8">
             Create professional, ATS-friendly resumes in minutes. Choose from expert-designed templates and download as PDF instantly. No signup required.
           </p>
-          <SiteStats />
-        </div>
-
-        {/* Templates - Create New */}
-        <div className="max-w-7xl mx-auto mb-16">
-          <h2 className="text-2xl font-semibold mb-6 text-slate-900">Create New</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {templates.map((template) => (
-              <Link 
-                key={template.id} 
-                href={`/editor?template=${template.id}`}
-                onClick={() => trackEvent(EVENTS.TEMPLATE_CLICK(template.id), `Template: ${template.name}`)}
-              >
-                <div className="h-full border border-slate-200 hover:border-slate-400 transition-colors cursor-pointer bg-white/80 backdrop-blur-sm">
-                  <div className="p-4">
-                    <TemplatePreview 
-                      markdown={template.markdown} 
-                      color={template.color}
-                      font={template.font}
-                    />
-                    <h3 className="text-lg font-semibold mt-4 mb-2">{template.name}</h3>
-                    <p className="text-sm text-slate-600">{template.description}</p>
-                  </div>
-                </div>
-              </Link>
-            ))}
+          
+          {/* Create New Resume Button - Always First */}
+          <div className="max-w-7xl mx-auto mb-12">
+            <Link href="/editor?template=blank">
+              <Button size="lg" className="bg-black hover:bg-gray-800 text-white px-8 py-6 text-lg font-semibold">
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                Create New Resume
+              </Button>
+            </Link>
           </div>
         </div>
 
-        {/* Saved Documents */}
+        {/* Your Resumes - Show if exists */}
         {savedDocs.length > 0 && (
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-7xl mx-auto mb-16">
             <h2 className="text-2xl font-semibold mb-6 text-slate-900">Your Resumes</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {savedDocs.map((doc) => (
@@ -588,6 +573,67 @@ export default function Home() {
             </div>
           </div>
         )}
+
+        {/* Templates - Show if no saved resumes, or below saved resumes */}
+        {savedDocs.length === 0 && (
+          <div className="max-w-7xl mx-auto mb-16">
+            <h2 className="text-2xl font-semibold mb-6 text-slate-900">Or Start from a Template</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {templates.filter(t => t.id !== "blank").map((template) => (
+                <Link 
+                  key={template.id} 
+                  href={`/editor?template=${template.id}`}
+                  onClick={() => trackEvent(EVENTS.TEMPLATE_CLICK(template.id), `Template: ${template.name}`)}
+                >
+                  <div className="h-full border border-slate-200 hover:border-slate-400 transition-colors cursor-pointer bg-white/80 backdrop-blur-sm">
+                    <div className="p-4">
+                      <TemplatePreview 
+                        markdown={template.markdown} 
+                        color={template.color}
+                        font={template.font}
+                      />
+                      <h3 className="text-lg font-semibold mt-4 mb-2">{template.name}</h3>
+                      <p className="text-sm text-slate-600">{template.description}</p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Templates - Show below saved resumes if they exist */}
+        {savedDocs.length > 0 && (
+          <div className="max-w-7xl mx-auto mb-16">
+            <h2 className="text-2xl font-semibold mb-6 text-slate-900">Templates</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {templates.filter(t => t.id !== "blank").map((template) => (
+                <Link 
+                  key={template.id} 
+                  href={`/editor?template=${template.id}`}
+                  onClick={() => trackEvent(EVENTS.TEMPLATE_CLICK(template.id), `Template: ${template.name}`)}
+                >
+                  <div className="h-full border border-slate-200 hover:border-slate-400 transition-colors cursor-pointer bg-white/80 backdrop-blur-sm">
+                    <div className="p-4">
+                      <TemplatePreview 
+                        markdown={template.markdown} 
+                        color={template.color}
+                        font={template.font}
+                      />
+                      <h3 className="text-lg font-semibold mt-4 mb-2">{template.name}</h3>
+                      <p className="text-sm text-slate-600">{template.description}</p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Stats - Fixed at bottom */}
+        <div className="fixed bottom-4 right-4 z-50">
+          <SiteStats />
+        </div>
       </div>
 
       {/* Delete Confirmation Dialog */}

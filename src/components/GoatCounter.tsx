@@ -3,7 +3,7 @@
 import Script from "next/script";
 
 export default function GoatCounter() {
-  const goatCounterCode = process.env.NEXT_PUBLIC_GOATCOUNTER_CODE || "makemyresume";
+  const goatCounterCode = "makemyresume";
 
   return (
     <Script
