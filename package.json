@@ -1,6 +1,8 @@
 {
   "name": "makemyresume",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "Free online resume maker - Create professional resumes in minutes with live preview and PDF export",
+  "author": "Aditya Kumar Mandal",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,6 +11,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@radix-ui/react-alert-dialog": "^1.1.14",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-label": "^2.1.8",
     "@radix-ui/react-select": "^2.2.6",
@@ -18,12 +21,9 @@
     "@radix-ui/react-tooltip": "^1.2.8",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "html2pdf.js": "^0.12.1",
     "lucide-react": "^0.555.0",
     "markdown-it": "^14.1.0",
     "next": "16.0.7",
-    "pdf-lib": "^1.17.1",
-    "puppeteer": "^24.32.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-resizable-panels": "^3.0.6",
