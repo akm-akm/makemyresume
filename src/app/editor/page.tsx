@@ -811,24 +811,33 @@ function EditorContent() {
 
       {/* Download Guide Dialog */}
       <Dialog open={showGuideDialog} onOpenChange={setShowGuideDialog}>
-        <DialogContent className="sm:max-w-4xl p-0 overflow-hidden">
-          <div className="relative w-full">
+        <DialogContent className="sm:max-w-3xl p-6">
+          <DialogHeader className="pb-4">
+            <DialogTitle className="text-lg font-semibold text-left">
+              Follow the steps in the guide to save your resume as PDF
+            </DialogTitle>
+          </DialogHeader>
+          <div className="relative w-full rounded-lg overflow-hidden border border-slate-200 mb-4">
             <Image
               src="/guide.png"
               alt="Guide to save as PDF"
               width={1200}
               height={900}
               className="w-full h-auto"
+              style={{ maxHeight: "70vh", objectFit: "contain" }}
             />
           </div>
-          <div className="p-4 pt-0">
+          <div className="flex justify-end">
             <Button 
               onClick={() => {
                 setShowGuideDialog(false);
                 handleDownloadPdf();
               }}
-              className="w-full bg-black hover:bg-gray-800 text-white"
+              className="bg-black hover:bg-gray-800 text-white"
             >
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
               Got it, open print dialog
             </Button>
           </div>
@@ -931,7 +940,7 @@ function EditorContent() {
                         top: `calc(${(index + 1) * 297}mm - 15mm)`,
                         height: "2px",
                         background: "repeating-linear-gradient(90deg, #94a3b8 0, #94a3b8 10px, transparent 10px, transparent 20px)",
-                        zIndex: 1000,
+                        zIndex: 1,
                       }}
                     >
                       <div className="absolute right-4 -top-5 text-xs text-slate-500 bg-white px-2 py-1 rounded">
