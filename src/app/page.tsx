@@ -30,9 +30,62 @@ const templates = [
     id: "blank",
     name: "Blank Template",
     description: "Start from scratch with a clean slate",
-    markdown: "",
+    markdown: `# Your Full Name
+
+[your.email@example.com](mailto:your.email@example.com) | [Phone Number](tel:+1234567890) | [LinkedIn](https://linkedin.com/in/yourname) | [Portfolio/GitHub](https://github.com/yourname)
+
+---
+
+## Summary
+
+Write a brief professional summary (2-3 sentences) highlighting your experience, skills, and career goals.
+
+---
+
+## Experience
+
+### Job Title | Company Name
+*Start Date - End Date*
+
+- Key achievement or responsibility with quantifiable results
+- Another important achievement or project
+- Impact you made or skills you developed
+
+### Previous Job Title | Previous Company
+*Start Date - End Date*
+
+- Achievement or responsibility
+- Another achievement
+- Results or impact
+
+---
+
+## Education
+
+### Degree Name | University Name
+*Graduation Year*
+
+- Relevant coursework, honors, or achievements
+- GPA (if above 3.5)
+
+---
+
+## Skills
+
+**Category 1:** Skill 1, Skill 2, Skill 3  
+**Category 2:** Skill 4, Skill 5, Skill 6  
+**Category 3:** Skill 7, Skill 8
+
+---
+
+## Projects / Certifications / Achievements
+
+- Project or certification name with brief description
+- Another achievement or certification
+- Relevant accomplishment`,
     color: "#3b82f6",
     font: "Arial, sans-serif",
+    size: "90",
   },
   {
     id: "engineer",
@@ -40,6 +93,7 @@ const templates = [
     description: "For Backend, DevOps & AI Engineers",
     color: "#1e40af",
     font: "var(--font-merriweather), Georgia, serif",
+    size: "100",
     markdown: `# Aditya Kumar Mandal
 
 📧 [adityanick08@gmail.com](mailto:adityanick08@gmail.com) | 📱 [9709094xxx](tel:9709094xxx) | 💼 [linkedin](https://linkedin.com/in/adityakmandal) | 🐙 [github](https://github.com/akm-akm)
@@ -118,6 +172,7 @@ Systems Architect with 4+ years building multi-tenant SaaS, microservices, and L
     description: "Perfect for Sales & Business Development",
     color: "#3b82f6",
     font: "Arial, sans-serif",
+    size: "80",
     markdown: `# Sarah Johnson
 [sarah.johnson@email.com](mailto:sarah.johnson@email.com) | (555) 123-4567 | New York, NY | [LinkedIn](https://linkedin.com/in/sarahjohnson)
 
@@ -201,6 +256,7 @@ Results-driven Sales Professional with 8+ years of experience in B2B software sa
     description: "Ideal for Managers & Team Leads",
     color: "#7c3aed",
     font: "Calibri, sans-serif",
+    size: "110",
     markdown: `# Michael Chen
 [m.chen@email.com](mailto:m.chen@email.com) | LinkedIn: linkedin.com/in/mchen | San Francisco, CA | [Portfolio](https://mchen.pm)
 
@@ -289,6 +345,7 @@ Strategic Product Manager with 10+ years leading cross-functional teams at high-
     description: "Best for Software Engineers & Developers",
     color: "#4b5563",
     font: "Calibri, 'Gill Sans', sans-serif",
+    size: "100",
     markdown: `# Alex Kumar
 alex.kumar@email.com | github.com/alexk | Portfolio: alexkumar.dev | Seattle, WA | [LinkedIn](https://linkedin.com/in/alexkumar)
 
@@ -370,10 +427,11 @@ Full-stack Software Engineer with 7+ years of experience building scalable distr
   },
 ];
 
-const TemplatePreview = ({ markdown, color, font }: { markdown: string; color?: string; font?: string }) => {
+const TemplatePreview = ({ markdown, color, font, size }: { markdown: string; color?: string; font?: string; size?: string }) => {
   const [html, setHtml] = useState("");
   const primaryColor = color || "#3b82f6";
   const fontFamily = font || "Arial, sans-serif";
+  const fontSize = size ? (11 * parseInt(size) / 100) : 11;
 
   useEffect(() => {
     if (!markdown) {
@@ -411,7 +469,7 @@ const TemplatePreview = ({ markdown, color, font }: { markdown: string; color?: 
           padding: "56px",
           boxSizing: "border-box",
           fontFamily: fontFamily,
-          fontSize: "11px",
+          fontSize: `${fontSize}px`,
           lineHeight: "1.45",
           color: "#333333",
           // @ts-expect-error - CSS custom properties
@@ -553,6 +611,7 @@ export default function Home() {
                           markdown={doc.markdown} 
                           color={COLOR_SCHEMES[doc.colorScheme as keyof typeof COLOR_SCHEMES]?.primary || "#3b82f6"}
                           font={FONTS[doc.fontFamily as keyof typeof FONTS]?.family || "Arial, sans-serif"}
+                          size={doc.fontSize || "90"}
                         />
                         <h3 className="text-lg font-semibold mt-4 mb-1">{doc.name}</h3>
                         <p className="text-xs text-slate-500">Edited {formatDate(doc.lastEdited)}</p>
@@ -591,6 +650,7 @@ export default function Home() {
                         markdown={template.markdown} 
                         color={template.color}
                         font={template.font}
+                        size={template.size}
                       />
                       <h3 className="text-lg font-semibold mt-4 mb-2">{template.name}</h3>
                       <p className="text-sm text-slate-600">{template.description}</p>
@@ -619,6 +679,7 @@ export default function Home() {
                         markdown={template.markdown} 
                         color={template.color}
                         font={template.font}
+                        size={template.size}
                       />
                       <h3 className="text-lg font-semibold mt-4 mb-2">{template.name}</h3>
                       <p className="text-sm text-slate-600">{template.description}</p>

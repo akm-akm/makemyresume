@@ -113,7 +113,59 @@ Brief description of the project and your role.
 
 const TEMPLATE_SETTINGS: Record<string, TemplateSettings> = {
   blank: { 
-    markdown: "", 
+    markdown: `# Your Full Name
+
+[your.email@example.com](mailto:your.email@example.com) | [Phone Number](tel:+1234567890) | [LinkedIn](https://linkedin.com/in/yourname) | [Portfolio/GitHub](https://github.com/yourname)
+
+---
+
+## Summary
+
+Write a brief professional summary (2-3 sentences) highlighting your experience, skills, and career goals.
+
+---
+
+## Experience
+
+### Job Title | Company Name
+*Start Date - End Date*
+
+- Key achievement or responsibility with quantifiable results
+- Another important achievement or project
+- Impact you made or skills you developed
+
+### Previous Job Title | Previous Company
+*Start Date - End Date*
+
+- Achievement or responsibility
+- Another achievement
+- Results or impact
+
+---
+
+## Education
+
+### Degree Name | University Name
+*Graduation Year*
+
+- Relevant coursework, honors, or achievements
+- GPA (if above 3.5)
+
+---
+
+## Skills
+
+**Category 1:** Skill 1, Skill 2, Skill 3  
+**Category 2:** Skill 4, Skill 5, Skill 6  
+**Category 3:** Skill 7, Skill 8
+
+---
+
+## Projects / Certifications / Achievements
+
+- Project or certification name with brief description
+- Another achievement or certification
+- Relevant accomplishment`, 
     color: "blue", 
     font: "merriweather",
     size: "90"
