@@ -11,9 +11,15 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { COLOR_SCHEMES, FONTS } from "@/lib/resume-settings";
 import { trackEvent, EVENTS } from "@/lib/analytics";
-import SiteStats from "@/components/SiteStats";
+import { Github } from "lucide-react";
 
 type SavedDocument = {
   id: string;
@@ -482,6 +488,119 @@ const TemplatePreview = ({ markdown, color, font, size }: { markdown: string; co
   );
 };
 
+function StickyFooterWidget() {
+  const [stats, setStats] = useState({ views: 0, downloads: 0 });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const goatCounterCode = "makemyresume";
+        
+        const viewsRes = await fetch(
+          `https://${goatCounterCode}.goatcounter.com/counter/TOTAL.json`,
+          { mode: 'cors' }
+        );
+        
+        const downloadsRes = await fetch(
+          `https://${goatCounterCode}.goatcounter.com/counter/click/download-pdf.json`,
+          { mode: 'cors' }
+        );
+
+        if (viewsRes.ok) {
+          const viewsData = await viewsRes.json();
+          setStats(prev => ({ ...prev, views: viewsData.count || 0 }));
+        }
+        
+        if (downloadsRes.ok) {
+          const downloadsData = await downloadsRes.json();
+          setStats(prev => ({ ...prev, downloads: downloadsData.count || 0 }));
+        }
+      } catch {
+        // Silently fail
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const timer = setTimeout(fetchStats, 2000);
+    const interval = setInterval(fetchStats, 30000);
+    
+    return () => {
+      clearTimeout(timer);
+      clearInterval(interval);
+    };
+  }, []);
+
+  const views = stats.views || 0;
+  const downloads = stats.downloads || 0;
+
+  return (
+    <div className="fixed bottom-4 right-4 z-50">
+      <div className="bg-white/95 backdrop-blur-sm rounded-lg border border-slate-200 shadow-xl p-3 max-w-xs">
+        <TooltipProvider>
+          <div className="flex items-center gap-3 mb-2">
+            {/* Views with Tooltip */}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex items-center gap-1.5 cursor-help">
+                  <span className="text-slate-500 text-xs">👁</span>
+                  {loading ? (
+                    <div className="h-4 w-8 bg-slate-200 rounded animate-pulse"></div>
+                  ) : (
+                    <span className="font-semibold text-slate-700 text-sm">{views.toLocaleString()}</span>
+                  )}
+                </div>
+              </TooltipTrigger>
+              <TooltipContent side="left" className="max-w-xs">
+                <p className="text-xs">Total page views tracked by GoatCounter analytics</p>
+              </TooltipContent>
+            </Tooltip>
+            
+            <div className="w-px h-4 bg-slate-200"></div>
+            
+            {/* Downloads with Tooltip */}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex items-center gap-1.5 cursor-help">
+                  <span className="text-slate-500 text-xs">⬇</span>
+                  {loading ? (
+                    <div className="h-4 w-8 bg-slate-200 rounded animate-pulse"></div>
+                  ) : (
+                    <span className="font-semibold text-slate-700 text-sm">{downloads.toLocaleString()}</span>
+                  )}
+                </div>
+              </TooltipTrigger>
+              <TooltipContent side="left" className="max-w-xs">
+                <p className="text-xs">Total PDF downloads by users</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </TooltipProvider>
+        
+        {/* Contribution Text */}
+        <div className="pt-2 border-t border-slate-200">
+          <p className="text-slate-600 text-xs mb-1">
+            Tired of paid resume builders? 💸
+          </p>
+          <p className="text-slate-500 text-[10px] mb-2">
+            This is <strong className="text-slate-700">100% free & open source</strong>
+          </p>
+          <a
+            href="https://github.com/akm-akm/makemyresume"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-slate-700 hover:text-slate-900 transition-colors text-xs font-medium"
+          >
+            <Github className="w-3 h-3" />
+            <span>Contribute</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [savedDocs, setSavedDocs] = useState<SavedDocument[]>([]);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -577,9 +696,20 @@ export default function Home() {
         />
 
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold tracking-tight mb-4 text-slate-900">
-            MakeMyResume - Free Resume Builder
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <h1 className="text-5xl font-bold tracking-tight text-slate-900">
+              MakeMyResume - Free Resume Builder
           </h1>
+            <a
+              href="https://github.com/akm-akm/makemyresume"
+            target="_blank"
+            rel="noopener noreferrer"
+              className="text-slate-600 hover:text-slate-900 transition-colors"
+              aria-label="View on GitHub"
+            >
+              <Github className="w-6 h-6" />
+            </a>
+          </div>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-8">
             Create professional, ATS-friendly resumes in minutes. Choose from expert-designed templates and download as PDF instantly. No signup required.
           </p>
@@ -691,10 +821,8 @@ export default function Home() {
           </div>
         )}
 
-        {/* Stats - Fixed at bottom */}
-        <div className="fixed bottom-4 right-4 z-50">
-          <SiteStats />
-        </div>
+        {/* Sticky Footer Widget */}
+        <StickyFooterWidget />
       </div>
 
       {/* Delete Confirmation Dialog */}
@@ -785,7 +913,7 @@ export default function Home() {
           <span>Modern Resume Template - https://makemyresume.veeboo.in/editor?template=modern</span>
           <span>Minimal Resume Template - https://makemyresume.veeboo.in/editor?template=minimal</span>
         </nav>
-      </div>
+        </div>
     </div>
   );
 }
